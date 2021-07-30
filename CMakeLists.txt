@@ -4,4 +4,8 @@ project(Anatoole
         VERSION 0.1
         LANGUAGES CXX)
 
+configure_file(
+        ${PROJECT_SOURCE_DIR}/cmake/version.h.in
+        ${PROJECT_SOURCE_DIR}/app/include/version.h)
+
 add_subdirectory(app)
