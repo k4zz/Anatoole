@@ -2,7 +2,8 @@ project(gui)
 
 add_library(${PROJECT_NAME}
         src/MainWindow.cpp
-        include/MainWindow.h)
+        include/MainWindow.h
+        ui/MainWindow.ui)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         AUTOMOC ON

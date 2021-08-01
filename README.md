@@ -1,4 +1,4 @@
 # Anatoole
 
 ### CMake
-- Version3.20
+- Version: 3.20

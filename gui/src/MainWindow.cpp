@@ -7,4 +7,7 @@ MainWindow::MainWindow(QWidget* _parent)
         , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    auto windowTitle = QString(QCoreApplication::applicationName() + " v" + QCoreApplication::applicationVersion());
+    setWindowTitle(windowTitle);
+
 }
