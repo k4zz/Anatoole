@@ -1,0 +1,17 @@
+language: c++
+
+matrix:
+  include:
+    #- name: "Linux"
+    #  os: linux
+    - name: "Windows"
+      os: windows
+      language: shell
+      before_install:
+        - choco install cmake
+        - choco install ninja
+        - choco install qt5-default
+      install:
+        - mkdir build
+        - cmake -G Ninja -B build -D CMAKE_BUILD_TYPE=Release
+        - cmake --build build
