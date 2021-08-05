@@ -16,4 +16,8 @@ public:
 
 private:
     Ui::PathsWidget* ui;
+
+private slots:
+    void onProtocolButtonClicked();
+    void onCollationButtonClicked();
 };
