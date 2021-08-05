@@ -3,7 +3,16 @@ project(gui)
 add_library(${PROJECT_NAME}
         src/MainWindow.cpp
         include/MainWindow.h
-        ui/MainWindow.ui)
+        ui/MainWindow.ui
+        src/PathsWidget.cpp
+        include/PathsWidget.h
+        ui/PathsWidget.ui
+        src/LogConsoleWidget.cpp
+        include/LogConsoleWidget.h
+        ui/LogConsoleWidget.ui
+        src/SettingsWidget.cpp
+        include/SettingsWidget.h
+        ui/SettingsWidget.ui)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         AUTOMOC ON
