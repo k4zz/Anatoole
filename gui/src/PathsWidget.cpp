@@ -2,6 +2,8 @@
 
 #include "ui_PathsWidget.h"
 
+#include "Logger.h"
+
 #include <QPushButton>
 #include <QFileDialog>
 #include <QLineEdit>
@@ -26,6 +28,7 @@ void PathsWidget::onProtocolButtonClicked()
                                                  "Wybierz protokół",
                                                  QDir::homePath(),
                                                  "Excel file (*.xlsx)");
+    LOG_DEBUG("Selected protocol path: " + filename.toStdString());
     ui->leProtocol->setText(filename);
 }
 
@@ -35,6 +38,7 @@ void PathsWidget::onCollationButtonClicked()
                                                  "Wybierz zestawienie",
                                                  QDir::homePath(),
                                                  "Excel file (*.xlsx)");
+    LOG_DEBUG("Selected collation path: " + filename.toStdString());
     ui->leCollation->setText(filename);
 }
 

@@ -14,6 +14,6 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets gui)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets gui logger)
 
 message("-- Added: ${PROJECT_NAME}")
