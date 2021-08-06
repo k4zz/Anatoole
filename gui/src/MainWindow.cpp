@@ -21,6 +21,10 @@ MainWindow::MainWindow(QWidget* _parent)
     auto btnAnalyze = new QPushButton("Analizuj", this);
     auto* logConsoleWidget = new LogConsoleWidget(this);
 
+    LOG_DEBUG(windowTitle.toStdString() + " " +
+              getenv("USERNAME") + "@" + QSysInfo::machineHostName().toStdString() +
+              "(" + QSysInfo::prettyProductName().toStdString() + ")");
+
     ui->leftPanel->addWidget(pathsWidget);
     ui->leftPanel->addWidget(btnAnalyze);
     ui->leftPanel->addWidget(settingsWidget);
