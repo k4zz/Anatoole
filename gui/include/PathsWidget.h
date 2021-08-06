@@ -2,6 +2,8 @@
 
 #include <QWidget>
 
+class QLineEdit;
+
 namespace Ui
 {
     class PathsWidget;
@@ -20,4 +22,7 @@ private:
 private slots:
     void onProtocolButtonClicked();
     void onCollationButtonClicked();
+    void onLineEditChanged(const QString& _path);
+    static void swapLineEditColors(QLineEdit* _lineEdit, bool _valid);
+    static bool checkPathValid(const QString& _path) ;
 };
