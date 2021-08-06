@@ -18,11 +18,12 @@ MainWindow::MainWindow(QWidget* _parent)
 
     auto* pathsWidget = new PathsWidget(this);
     auto* settingsWidget = new SettingsWidget(this);
+    auto btnAnalyze = new QPushButton("Analizuj", this);
+    auto* logConsoleWidget = new LogConsoleWidget(this);
+
     ui->leftPanel->addWidget(pathsWidget);
-    ui->leftPanel->addWidget(new QPushButton("Analizuj", this));
+    ui->leftPanel->addWidget(btnAnalyze);
     ui->leftPanel->addWidget(settingsWidget);
     ui->leftPanel->addStretch();
-
-    auto* widget2 = new LogConsoleWidget(this);
-    ui->rightPanel->addWidget(widget2);
+    ui->rightPanel->addWidget(logConsoleWidget);
 }
