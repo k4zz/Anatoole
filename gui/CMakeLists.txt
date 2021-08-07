@@ -12,7 +12,8 @@ add_library(${PROJECT_NAME}
         ui/LogConsoleWidget.ui
         src/SettingsWidget.cpp
         include/SettingsWidget.h
-        ui/SettingsWidget.ui)
+        ui/SettingsWidget.ui
+        )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         AUTOMOC ON

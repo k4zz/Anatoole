@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>183</width>
+    <width>191</width>
     <height>111</height>
    </rect>
   </property>
@@ -44,10 +44,10 @@
       <property name="bottomMargin">
        <number>3</number>
       </property>
-      <item row="2" column="0">
-       <widget class="QLabel" name="lblCollation">
+      <item row="0" column="2">
+       <widget class="QLabel" name="lblNumber">
         <property name="text">
-         <string>Zestawienie</string>
+         <string>Numer</string>
         </property>
        </widget>
       </item>
@@ -58,10 +58,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="lblNumber">
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblCollation">
         <property name="text">
-         <string>Numer</string>
+         <string>Zestawienie</string>
         </property>
        </widget>
       </item>
@@ -73,44 +73,16 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBox">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="leProtocolName"/>
       </item>
       <item row="1" column="2">
-       <widget class="QSpinBox" name="spinBox_2">
-        <property name="minimumSize">
-         <size>
-          <width>50</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="leProtocolNum"/>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox_3">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="leCollationName"/>
       </item>
       <item row="2" column="2">
-       <widget class="QSpinBox" name="spinBox_4">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="leCollationNum"/>
       </item>
      </layout>
     </widget>
