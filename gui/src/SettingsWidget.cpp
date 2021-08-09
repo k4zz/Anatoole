@@ -37,4 +37,6 @@ SettingsWidget::SettingsWidget(QWidget* _parent)
     ui->leProtocolName->setValidator(new Validator());
     ui->leCollationNum->setValidator(new Validator());
     ui->leCollationName->setValidator(new Validator());
+
+    LOG_DEBUG("Settings widget created");
 }

@@ -15,6 +15,9 @@ Q_OBJECT
 
 public:
     explicit PathsWidget(QWidget* _parent = nullptr);
+    std::string getProtocolPath();
+    std::string getCollationPath();
+    bool valid;
 
 private:
     Ui::PathsWidget* ui;

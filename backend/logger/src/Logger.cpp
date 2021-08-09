@@ -10,8 +10,13 @@ Logger& Logger::instance()
 
 void Logger::log(const std::string& _msg, LogLevel _level)
 {
-    std::cout << toString(_level) << "\t" << _msg << "\n";
+    consoleLog(_msg, _level);
     notifySubscribers(_msg, _level);
+}
+
+void Logger::consoleLog(const std::string& _msg, LogLevel _level)
+{
+    std::cout << toString(_level) << "\t" << _msg << "\n";
 }
 
 void Logger::subscribe(ILoggerObserver* _observer)

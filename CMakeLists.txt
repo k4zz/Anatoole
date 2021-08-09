@@ -9,5 +9,5 @@ configure_file(
         ${PROJECT_SOURCE_DIR}/app/include/version.h)
 
 add_subdirectory(backend)
-add_subdirectory(app)
 add_subdirectory(gui)
+add_subdirectory(app)

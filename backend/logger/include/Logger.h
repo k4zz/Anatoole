@@ -43,6 +43,7 @@ public:
     void subscribe(ILoggerObserver* _observer);
     void unsubscribe(ILoggerObserver* _observer);
     void log(const std::string& _msg, LogLevel _level = LogLevel::NONE);
+    void consoleLog(const std::string& _msg, LogLevel _level = LogLevel::DEBUG);
 
 private:
     Logger() = default;
@@ -52,7 +53,8 @@ private:
 };
 
 #define LOG(_level, _msg) Logger::instance().log(_msg, _level)
-#define LOG_DEBUG(_msg) LOG(LogLevel::DEBUG, _msg)
+#define LOG_ONLY_CONSOLE(_level, _msg) Logger::instance().consoleLog(_msg, _level)
+#define LOG_DEBUG(_msg) LOG_ONLY_CONSOLE(LogLevel::DEBUG, _msg)
 #define LOG_INFO(_msg) LOG(LogLevel::INFO, _msg)
 #define LOG_WARNING(_msg) LOG(LogLevel::WARNING, _msg)
 #define LOG_ERROR(_msg) LOG(LogLevel::ERROR, _msg)

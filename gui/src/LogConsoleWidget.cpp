@@ -14,6 +14,8 @@ LogConsoleWidget::LogConsoleWidget(QWidget* _parent)
     ui->tbLogConsole->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 
     connect(ui->btnClear, &QPushButton::clicked, this, &LogConsoleWidget::onClearButtonClicked);
+
+    LOG_DEBUG("Log console widget created");
 }
 
 void LogConsoleWidget::log(const std::string& _msg, LogLevel _level)
