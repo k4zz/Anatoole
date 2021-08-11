@@ -3,13 +3,15 @@
 #include <string>
 #include "Logger.h"
 
+#include "ProtocolModel.h"
+
 class Parser
 {
 public:
     Parser(std::string _path);
 
 private:
-
-private:
-    std::string path;
+    std::string path{};
+    ProtocolModel protocolModel;
+    bool withHeader;
 };

@@ -3,7 +3,7 @@
 #include "MainWindow.h"
 
 #include "version.h"
-#include "parser.h"
+#include "Parser.h"
 
 int main(int argc, char *argv[])
 {
