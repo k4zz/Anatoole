@@ -1,4 +1,3 @@
 project(backend)
 
 add_subdirectory(logger)
-add_subdirectory(parser)
