@@ -3,7 +3,7 @@ project(parser)
 add_library(${PROJECT_NAME}
         src/Parser.cpp
         include/Parser.h
-        include/ProtocolModel.h)
+        )
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 

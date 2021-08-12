@@ -3,8 +3,6 @@
 #include <string>
 #include "Logger.h"
 
-#include "ProtocolModel.h"
-
 class Parser
 {
 public:
@@ -12,6 +10,6 @@ public:
 
 private:
     std::string path{};
-    ProtocolModel protocolModel;
+    std::map<std::string, std::vector<std::string>> protocolEntries;
     bool withHeader;
 };
