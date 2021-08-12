@@ -3,7 +3,8 @@
 #include "MainWindow.h"
 
 #include "version.h"
-#include "Parser.h"
+#include "CollationParser.h"
+#include "ProtocolParser.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,7 +15,12 @@ int main(int argc, char *argv[])
 
     MainWindow* mainWindow = new MainWindow();
     mainWindow->show();
-    Parser parser("F:/collation.csv");
+    CollationParser collationParser;
+    ProtocolParser protocolParser;
+
+    collationParser.parse("F:/collation.csv");
+    protocolParser.parse("F:/protocol.csv");
+
     app.exec();
 
     return 0;

@@ -1,26 +1,19 @@
-#include "Parser.h"
+#include "CollationParser.h"
 
 #include "rapidcsv.h"
 
 #include "Utils.h"
 
-namespace
+void CollationParser::parse(std::string _path)
 {
-    constexpr const int NO_COLUMN = 0;
-    constexpr const int KEY_COLUMN = 1;
-    constexpr const int VALUE_COLUMN = 2;
-}
+    clear();
 
-Parser::Parser(std::string _path)
-        : path(_path)
-        , withHeader(false)
-{
     // open csv
     rapidcsv::Document doc;
     try {
-        doc.Load(path, rapidcsv::LabelParams(-1, -1));
+        doc.Load(_path, rapidcsv::LabelParams(-1, -1));
     } catch (const std::exception& e) {
-        LOG_ERROR("Problem with opening/reading file: " + path);
+        LOG_ERROR("Problem with opening/reading file: " + _path);
         LOG_DEBUG(e.what());
     }
 
@@ -28,10 +21,10 @@ Parser::Parser(std::string _path)
         std::vector<std::string> row = doc.GetRow<std::string>(rowIdx);
 
         /// STEP I - prepare key
-        auto key = Utils::trim(row[KEY_COLUMN]);
+        auto key = Utils::trim(row[keyColumn]);
 
         /// STEP II - prepare values
-        auto valuesStr = row[VALUE_COLUMN];
+        auto valuesStr = row[valueColumn];
         // remove whitespaces
         valuesStr.erase(std::remove_if(valuesStr.begin(),
                                        valuesStr.end(),
@@ -44,11 +37,12 @@ Parser::Parser(std::string _path)
                      values.end());
 
         /// STEP III - add to map
-        if (protocolEntries.find(key) not_eq protocolEntries.end()) {
-            protocolEntries[key].insert(protocolEntries[key].end(), values.begin(), values.end());
+        if (entries.find(key) not_eq entries.end()) {
+            entries[key].insert(entries[key].end(), values.begin(), values.end());
         } else {
-            protocolEntries[key] = std::move(values);
+            entries[key] = std::move(values);
         }
     }
-}
 
+    LOG_DEBUG("Created " + std::to_string(entries.size())  + " from collation");
+}
