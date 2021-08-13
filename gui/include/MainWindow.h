@@ -2,6 +2,8 @@
 
 #include <QMainWindow>
 
+class Controller;
+
 namespace Ui
 {
     class MainWindow;

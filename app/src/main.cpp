@@ -2,9 +2,9 @@
 
 #include "MainWindow.h"
 
+#include "Controller.h"
+
 #include "version.h"
-#include "CollationParser.h"
-#include "ProtocolParser.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,16 +12,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(PROJECT_NAME);
     QCoreApplication::setApplicationVersion(PROJECT_VERSION);
 
+    Controller::instance();
 
-    MainWindow* mainWindow = new MainWindow();
+    auto* mainWindow = new MainWindow();
     mainWindow->show();
-    CollationParser collationParser;
-    ProtocolParser protocolParser;
-
-    collationParser.parse("F:/collation.csv");
-    protocolParser.parse("F:/protocol.csv");
-
-    auto num = collationParser.getEntries();
 
     app.exec();
 

@@ -8,6 +8,11 @@
 #include <QFileDialog>
 #include <QLineEdit>
 
+namespace
+{
+    constexpr char* ALLOWED = "Excel file (*.xlsx);;CSV (*.csv)";
+}
+
 PathsWidget::PathsWidget(QWidget* _parent)
         : QWidget(_parent)
         , ui(new Ui::PathsWidget)
@@ -27,7 +32,7 @@ void PathsWidget::onProtocolButtonClicked()
     auto filename = QFileDialog::getOpenFileName(this,
                                                  "Wybierz protokół",
                                                  QDir::homePath(),
-                                                 "Excel file (*.xlsx)");
+                                                 ALLOWED);
     LOG_DEBUG("Selected protocol path: " + filename.toStdString());
     ui->leProtocol->setText(filename);
 }
@@ -37,7 +42,7 @@ void PathsWidget::onCollationButtonClicked()
     auto filename = QFileDialog::getOpenFileName(this,
                                                  "Wybierz zestawienie",
                                                  QDir::homePath(),
-                                                 "Excel file (*.xlsx)");
+                                                 ALLOWED);
     LOG_DEBUG("Selected collation path: " + filename.toStdString());
     ui->leCollation->setText(filename);
 }
@@ -50,10 +55,7 @@ void PathsWidget::onLineEditChanged(const QString& _path)
 
 bool PathsWidget::checkPathValid(const QString& _path)
 {
-    auto valid = true;
-    valid = _path.endsWith(".xlsx");
-
-    return valid;
+    return _path.endsWith(".xlsx") or _path.endsWith(".csv");
 }
 
 void PathsWidget::swapLineEditColors(QLineEdit* _lineEdit, bool _valid)
@@ -62,4 +64,9 @@ void PathsWidget::swapLineEditColors(QLineEdit* _lineEdit, bool _valid)
         _lineEdit->setStyleSheet("QLineEdit {background-color: #FFFFFF;}");
     else
         _lineEdit->setStyleSheet("QLineEdit {background-color: #FA756E;}");
+}
+
+std::pair<std::string, std::string> PathsWidget::getPath() const
+{
+    return std::make_pair(ui->leProtocol->text().toStdString(), ui->leCollation->text().toStdString());
 }
