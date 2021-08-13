@@ -2,10 +2,11 @@ project(parser)
 
 add_library(${PROJECT_NAME} STATIC
         include/ParserBase.h
-        src/CollationParser.cpp
+        include/CSVParser.h
         include/CollationParser.h
-        src/ProtocolParser.cpp
+        src/CollationParser.cpp
         include/ProtocolParser.h
+        src/ProtocolParser.cpp
         )
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)

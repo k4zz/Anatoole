@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
     collationParser.parse("F:/collation.csv");
     protocolParser.parse("F:/protocol.csv");
 
+    auto num = collationParser.getEntries();
+
     app.exec();
 
     return 0;

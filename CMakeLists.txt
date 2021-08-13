@@ -10,6 +10,6 @@ configure_file(
 
 add_subdirectory(3rdparty/rapidcsv)
 add_subdirectory(utils)
-add_subdirectory(backend)
+add_subdirectory(core)
 add_subdirectory(app)
 add_subdirectory(gui)

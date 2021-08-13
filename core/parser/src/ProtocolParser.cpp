@@ -1,17 +1,25 @@
-#include "CollationParser.h"
+#include "ProtocolParser.h"
 
 #include "rapidcsv.h"
 
 #include "Utils.h"
 
-void CollationParser::parse(std::string _path)
+void ProtocolParser::parse(std::string _path)
 {
     clear();
 
     // open csv
     rapidcsv::Document doc;
     try {
-        doc.Load(_path, rapidcsv::LabelParams(-1, -1));
+        doc.Load(_path,
+                 rapidcsv::LabelParams(-1, -1),
+                 rapidcsv::SeparatorParams(
+                         ',',
+                         false,
+                         rapidcsv::sPlatformHasCR,
+                         true,
+                         true
+                 ));
     } catch (const std::exception& e) {
         LOG_ERROR("Problem with opening/reading file: " + _path);
         LOG_DEBUG(e.what());
@@ -21,17 +29,12 @@ void CollationParser::parse(std::string _path)
         std::vector<std::string> row = doc.GetRow<std::string>(rowIdx);
 
         /// STEP I - prepare key
-        auto key = Utils::trim(row[keyColumn]);
+        auto key = Utils::trim(row[mKeyColumn]);
 
         /// STEP II - prepare values
-        auto valuesStr = row[valueColumn];
-        // remove whitespaces
-        valuesStr.erase(std::remove_if(valuesStr.begin(),
-                                       valuesStr.end(),
-                                       [](unsigned char x) { return std::isspace(x); }),
-                        valuesStr.end());
+        auto valuesStr = row[mValueColumn];
         // split string
-        auto values = Utils::split(std::move(valuesStr), ",");
+        auto values = Utils::split(valuesStr, "\n");
         // remove empty strings
         values.erase(std::remove(values.begin(), values.end(), ""),
                      values.end());
@@ -44,5 +47,5 @@ void CollationParser::parse(std::string _path)
         }
     }
 
-    LOG_DEBUG("Created " + std::to_string(entries.size())  + " from collation");
+    LOG_DEBUG("Created " + std::to_string(entries.size()) + " from protocol");
 }
