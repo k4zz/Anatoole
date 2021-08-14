@@ -4,7 +4,7 @@
 
 #include "Utils.h"
 
-void CollationParser::parse(std::string _path)
+bool CollationParser::parse(std::string _path)
 {
     clear();
 
@@ -13,8 +13,8 @@ void CollationParser::parse(std::string _path)
     try {
         doc.Load(_path, rapidcsv::LabelParams(-1, -1));
     } catch (const std::exception& e) {
-        LOG_ERROR("Problem with opening/reading file: " + _path);
-        LOG_DEBUG(e.what());
+        LOG_ERROR("Problem with opening/reading collation file: " + _path);
+        return false;
     }
 
     for (auto rowIdx = 0; rowIdx < doc.GetRowCount(); rowIdx++) {
@@ -44,5 +44,5 @@ void CollationParser::parse(std::string _path)
         }
     }
 
-    LOG_DEBUG("Created " + std::to_string(entries.size())  + " from collation");
+    return true;
 }

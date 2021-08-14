@@ -4,7 +4,7 @@
 
 #include "Utils.h"
 
-void ProtocolParser::parse(std::string _path)
+bool ProtocolParser::parse(std::string _path)
 {
     clear();
 
@@ -21,8 +21,8 @@ void ProtocolParser::parse(std::string _path)
                          true
                  ));
     } catch (const std::exception& e) {
-        LOG_ERROR("Problem with opening/reading file: " + _path);
-        LOG_DEBUG(e.what());
+        LOG_ERROR("Problem with opening/reading protocol file: " + _path);
+        return false;
     }
 
     for (auto rowIdx = 0; rowIdx < doc.GetRowCount(); rowIdx++) {
@@ -47,5 +47,5 @@ void ProtocolParser::parse(std::string _path)
         }
     }
 
-    LOG_DEBUG("Created " + std::to_string(entries.size()) + " from protocol");
+    return true;
 }
