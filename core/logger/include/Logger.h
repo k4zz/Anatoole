@@ -48,7 +48,6 @@ private:
     Logger() = default;
     void notifySubscribers(const std::string& _msg, LogLevel _level);
     std::list<ILoggerObserver*> subscribers;
-
 };
 
 #define LOG(_level, _msg) Logger::instance().log(_msg, _level)

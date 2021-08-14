@@ -1,5 +1,8 @@
 #pragma once
 
+#include <map>
+#include <vector>
+
 using Entries = std::map<std::string, std::vector<std::string>>;
 
 class ParserBase

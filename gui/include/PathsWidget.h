@@ -16,6 +16,8 @@ Q_OBJECT
 public:
     explicit PathsWidget(QWidget* _parent = nullptr);
 
+    std::pair<std::string, std::string> getPath() const;
+
 private:
     Ui::PathsWidget* ui;
 
