@@ -27,6 +27,16 @@ void LogConsoleWidget::log(const std::string& _msg, LogLevel _level, const std::
     ui->tbLogConsole->setItem(ui->tbLogConsole->rowCount() - 1,
                               0,
                               item);
+    switch (_level) {
+        case LogLevel::WARNING:
+            item->setBackground(QColor::fromRgb(255,255,0, 100));
+            break;
+        case LogLevel::ERROR:
+            item->setBackground(QColor::fromRgb(255,0,0, 100));
+            break;
+        default:
+            break;
+    }
 
     // PLACE column
     item = new QTableWidgetItem(QString::fromStdString(_fileName + ":" + std::to_string(_line)));
