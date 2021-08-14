@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget* _parent)
     connect(btnAnalyze, &QPushButton::clicked, [pathsWidget]()
     {
         auto paths = pathsWidget->getPath();
-        //Controller::instance().setParsingType();
+        Controller::instance().setParsingType();
         Controller::instance().setPaths(paths.first, paths.second);
         Controller::instance().execute();
     });

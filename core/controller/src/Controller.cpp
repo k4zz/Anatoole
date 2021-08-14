@@ -5,6 +5,7 @@
 
 #include "ProtocolParser.h"
 #include "CollationParser.h"
+#include "Analyzer.h"
 
 Controller& Controller::instance()
 {
@@ -20,6 +21,7 @@ void Controller::execute()
     if (not parseFiles())
         return;
 
+    Analyzer analyzer(mProtocolParser->getEntries(), mCollationParser->getEntries());
     //TODO: call of analysis
 }
 
