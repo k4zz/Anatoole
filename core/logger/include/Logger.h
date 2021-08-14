@@ -2,6 +2,7 @@
 
 #include <string>
 #include <list>
+#include <cstring>
 
 enum class LogLevel
 {
@@ -30,7 +31,7 @@ class ILoggerObserver
 {
 public:
     virtual ~ILoggerObserver() = default;
-    virtual void log(const std::string& _msg, LogLevel _level) = 0;
+    virtual void log(const std::string& _msg, LogLevel _level, const std::string& _fileName, int _line) = 0;
 };
 
 class Logger
@@ -42,15 +43,16 @@ public:
 
     void subscribe(ILoggerObserver* _observer);
     void unsubscribe(ILoggerObserver* _observer);
-    void log(const std::string& _msg, LogLevel _level = LogLevel::NONE);
+    void log(const std::string& _msg, LogLevel _level, const std::string& _fileName, int _line);
 
 private:
     Logger() = default;
-    void notifySubscribers(const std::string& _msg, LogLevel _level);
+    void notifySubscribers(const std::string& _msg, LogLevel _level, const std::string& _fileName, int _line);
     std::list<ILoggerObserver*> subscribers;
 };
 
-#define LOG(_level, _msg) Logger::instance().log(_msg, _level)
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+#define LOG(_level, _msg) Logger::instance().log(_msg, _level, __FILENAME__, __LINE__)
 #define LOG_DEBUG(_msg) LOG(LogLevel::DEBUG, _msg)
 #define LOG_INFO(_msg) LOG(LogLevel::INFO, _msg)
 #define LOG_WARNING(_msg) LOG(LogLevel::WARNING, _msg)
