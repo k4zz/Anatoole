@@ -16,6 +16,10 @@ public:
     void setParsingType();
 
 private:
+    bool isParsersCreated();
+    bool parseFiles();
+
+private:
     Controller() = default;
     std::string mProtocolPath;
     std::string mCollationPath;
