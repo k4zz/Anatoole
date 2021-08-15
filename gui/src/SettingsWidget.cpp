@@ -47,9 +47,13 @@ SettingsWidget::SettingsWidget(QWidget* _parent)
 {
     ui->setupUi(this);
     ui->leProtocolNum->setValidator(new Validator());
+    ui->leProtocolNum->insert("A");
     ui->leProtocolName->setValidator(new Validator());
+    ui->leProtocolName->insert("C");
     ui->leCollationNum->setValidator(new Validator());
+    ui->leCollationNum->insert("C");
     ui->leCollationName->setValidator(new Validator());
+    ui->leCollationName->insert("B");
 }
 
 Settings SettingsWidget::getSettings() const
