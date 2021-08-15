@@ -6,6 +6,7 @@
 #include "ProtocolParser.h"
 #include "CollationParser.h"
 #include "Analyzer.h"
+#include "Utils.h"
 
 Controller& Controller::instance()
 {
@@ -16,10 +17,16 @@ Controller& Controller::instance()
 void Controller::execute()
 {
     if (not isParsersCreated())
+    {
+        LOG_ERROR("Cannot execute parsing; parsers not created");
         return;
+    }
 
     if (not parseFiles())
+    {
+        LOG_ERROR("Failed to parse one of the files");
         return;
+    }
 
     Analyzer analyzer(mProtocolParser->getEntries(), mCollationParser->getEntries());
     //TODO: call of analysis
@@ -33,14 +40,24 @@ void Controller::setPaths(std::string _protocolPath, std::string _collationPath)
 
 void Controller::setParsingType()
 {
-    mProtocolParser = std::make_unique<ProtocolParser>();
-    mCollationParser = std::make_unique<CollationParser>();
+    if(Utils::ends_with(mProtocolPath, ".csv"))
+    {
+        mProtocolParser = std::make_unique<ProtocolParser>();
+    }
+
+    if (Utils::ends_with(mCollationPath, ".csv"))
+    {
+        mCollationParser = std::make_unique<CollationParser>();
+    }
 }
 
 void Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn, int _collationValueColumn)
 {
     if(not isParsersCreated())
+    {
+        LOG_ERROR("Cannot set settings; Parsers not created");
         return;
+    }
 
     mProtocolParser->setSettings(_protocolKeyColumn, _protocolValueColumn);
     mCollationParser->setSettings(_collationKeyColumn, _collationValueColumn);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 namespace Utils
 {
     inline std::string trim(const std::string& string)
@@ -39,5 +41,11 @@ namespace Utils
         _str.erase(std::remove_if(_str.begin(), _str.end(), [](unsigned char x) { return std::isspace(x); }),
                    _str.end());
         return _str;
+    }
+
+    inline bool ends_with(const std::string& value, const std::string& ending)
+    {
+        if(ending.size() > value.size()) return false;
+        return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
     }
 }

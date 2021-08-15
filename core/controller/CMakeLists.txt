@@ -9,6 +9,6 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE logger PUBLIC parser analyzer)
+target_link_libraries(${PROJECT_NAME} PRIVATE logger PUBLIC parser analyzer utils)
 
 message("-- Added: ${PROJECT_NAME}")
