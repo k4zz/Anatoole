@@ -10,7 +10,7 @@
 
 namespace
 {
-    constexpr char* ALLOWED = "Excel file (*.xlsx);;CSV (*.csv)";
+    constexpr const char* ALLOWED = "Excel file (*.xlsx);;CSV (*.csv)";
 }
 
 PathsWidget::PathsWidget(QWidget* _parent)

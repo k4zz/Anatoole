@@ -1,13 +1,13 @@
 #include <algorithm>
 #include "Analyzer.h"
-
 #include "Logger.h"
 
 Analyzer::Analyzer(const Entries& _protocolEntries, const Entries& _collationEntries)
 {
-    for(auto [num, names] : _protocolEntries)
+    LOG_DEBUG("Analysis of protocol against collation");
+    for(const auto& [num, names] : _protocolEntries)
     {
-        for(auto name : names)
+        for(const auto& name : names)
         {
             auto collationEntry = _collationEntries.find(name);
             if(collationEntry == _collationEntries.end())
@@ -25,9 +25,10 @@ Analyzer::Analyzer(const Entries& _protocolEntries, const Entries& _collationEnt
         }
     }
 
+    LOG_DEBUG("Analysis of collation against protocol");
     for(auto [name, numbers] : _collationEntries)
     {
-        for(auto num : numbers)
+        for(const auto& num : numbers)
         {
             auto protocolEntry = _protocolEntries.find(num);
             if(protocolEntry == _protocolEntries.end())
@@ -44,9 +45,10 @@ Analyzer::Analyzer(const Entries& _protocolEntries, const Entries& _collationEnt
             }
         }
     }
+    LOG_DEBUG("End of analysis");
 }
 
-int Analyzer::problemCount() const
+int Analyzer::problemsCount() const
 {
     return problems.size();
 }

@@ -1,11 +1,9 @@
 #include "Controller.h"
 
 #include <memory>
-#include <utility>
 
 #include "ProtocolParser.h"
 #include "CollationParser.h"
-#include "Analyzer.h"
 #include "Utils.h"
 
 void Controller::execute()
@@ -13,14 +11,14 @@ void Controller::execute()
     resetComponents();
 
     if(not validatePaths())
-        return;
-
-    //TODO: make it return bool
-    createParsers();
-
-    if (not isParsersCreated())
     {
-        LOG_ERROR("Cannot execute parsing; parsers not created");
+        LOG_ERROR("File paths are invalid");
+        return;
+    }
+
+    if(not createParsers())
+    {
+        LOG_ERROR("Parsers were not created");
         return;
     }
 
@@ -34,10 +32,18 @@ void Controller::execute()
 
     handleProblems();
 
-    if (not mAnalyzer->problemCount())
+    if (not mAnalyzer->problemsCount())
         LOG_INFO("Analysis done, no problems found");
     else
-        LOG_WARNING("Analysis done, found " + std::to_string(mAnalyzer->problemCount()) + " problems. Check your files.");
+        LOG_WARNING("Analysis done, found " + std::to_string(mAnalyzer->problemsCount()) + " problems. Check your files.");
+}
+
+void Controller::resetComponents()
+{
+    mProtocolParser.reset();
+    mCollationParser.reset();
+    mAnalyzer.reset();
+    LOG_DEBUG("Reset of controller components");
 }
 
 void Controller::setPaths(std::string _protocolPath, std::string _collationPath)
@@ -47,38 +53,50 @@ void Controller::setPaths(std::string _protocolPath, std::string _collationPath)
 
 }
 
-void Controller::createParsers()
+bool Controller::validatePaths()
+{
+    auto allow = true;
+    if (mProtocolPath.empty())
+    {
+        LOG_ERROR("Protocol path is empty");
+        allow = false;
+    }
+    if (mCollationPath.empty())
+    {
+        LOG_ERROR("Collation path is empty");
+        allow = false;
+    }
+    return allow;
+}
+
+bool Controller::createParsers()
 {
 
     if (Utils::ends_with(mProtocolPath, ".csv"))
     {
         mProtocolParser = std::make_unique<ProtocolParser>();
+        LOG_DEBUG("CSVProtocolParser created");
     }
 
     if (Utils::ends_with(mCollationPath, ".csv"))
     {
         mCollationParser = std::make_unique<CollationParser>();
+        LOG_DEBUG("CSVCollationParser created");
     }
+
+    return mProtocolParser && mCollationParser;
 }
 
 //TODO: settings should be separate class
 bool Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn,
                              int _collationValueColumn)
 {
-    if (not isParsersCreated())
-    {
-        LOG_ERROR("Cannot set settings; Parser/s not created");
+    if(not (mProtocolParser && mCollationParser))
         return false;
-    }
 
     mProtocolParser->setSettings(_protocolKeyColumn, _protocolValueColumn);
     mCollationParser->setSettings(_collationKeyColumn, _collationValueColumn);
     return true;
-}
-
-bool Controller::isParsersCreated()
-{
-    return mProtocolParser && mCollationParser;
 }
 
 bool Controller::parseFiles()
@@ -105,7 +123,7 @@ bool Controller::parseFiles()
 
 void Controller::handleProblems()
 {
-    for(auto problem : mAnalyzer->getProblems())
+    for(const auto& problem : mAnalyzer->getProblems())
     {
         switch (problem.type)
         {
@@ -123,27 +141,4 @@ void Controller::handleProblems()
                 break;
         }
     }
-}
-
-void Controller::resetComponents()
-{
-    mProtocolParser.reset();
-    mCollationParser.reset();
-    mAnalyzer.reset();
-}
-
-bool Controller::validatePaths()
-{
-    auto allow = true;
-    if (mProtocolPath.empty())
-    {
-        LOG_ERROR("Cannot create protocol parser, path is empty");
-        allow = false;
-    }
-    if (mCollationPath.empty())
-    {
-        LOG_ERROR("Cannot create collation parser, path is empty");
-        allow = false;
-    }
-    return allow;
 }

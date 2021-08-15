@@ -1,7 +1,5 @@
 #include "Logger.h"
 
-#include <iostream>
-
 Logger& Logger::instance()
 {
     static Logger instance;

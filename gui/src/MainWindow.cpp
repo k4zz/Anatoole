@@ -6,8 +6,6 @@
 #include "LogConsoleWidget.h"
 #include "SettingsWidget.h"
 
-#include "Controller.h"
-
 #include <QPushButton>
 
 MainWindow::MainWindow(std::shared_ptr<Controller> _controller, QWidget* _parent)

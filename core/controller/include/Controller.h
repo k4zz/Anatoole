@@ -29,22 +29,17 @@ public:
     void setPaths(std::string _protocolPath, std::string _collationPath);
 
 private:
-    void createParsers();
-
-private:
-    bool isParsersCreated();
+    bool createParsers();
     bool parseFiles();
+    void handleProblems();
+    void resetComponents();
+    bool validatePaths();
 
 private:
     std::string mProtocolPath;
     std::string mCollationPath;
     std::unique_ptr<ParserBase> mProtocolParser;
     std::unique_ptr<ParserBase> mCollationParser;
+
     std::unique_ptr<Analyzer> mAnalyzer;
-
-    void handleProblems();
-
-    void resetComponents();
-
-    bool validatePaths();
 };

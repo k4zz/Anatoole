@@ -22,7 +22,6 @@ inline std::string toString(LogLevel _level)
         case LogLevel::INFO:        return "INFO";
         case LogLevel::WARNING:     return "WARNING";
         case LogLevel::ERROR:       return "ERROR";
-        default:                    break;
     }
     return "INVALID";
 }
