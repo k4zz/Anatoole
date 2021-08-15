@@ -13,7 +13,7 @@ protected:
     CSVParser(int _keyColumn, int _valueColumn) : mKeyColumn(_keyColumn), mValueColumn(_valueColumn){}
 
 public:
-    void setSettings(int _keyColumn, int _valueColumn) { mKeyColumn = _keyColumn; mValueColumn = _valueColumn; }
+    void setSettings(int _keyColumn, int _valueColumn) override { mKeyColumn = _keyColumn; mValueColumn = _valueColumn; }
     void clear() { entries.clear(); }
 
 protected:

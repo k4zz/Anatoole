@@ -11,7 +11,7 @@ public:
     Controller& operator=(const Controller&) = delete;
 
     void execute();
-    void setSettings();
+    void setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn, int _collationValueColumn);
     void setPaths(std::string _protocolPath, std::string _collationPath);
     void setParsingType();
 

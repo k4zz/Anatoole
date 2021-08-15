@@ -3,6 +3,7 @@
 #include "MainWindow.h"
 
 #include "Controller.h"
+#include "ConsoleLogger.h"
 
 #include "version.h"
 
@@ -12,7 +13,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(PROJECT_NAME);
     QCoreApplication::setApplicationVersion(PROJECT_VERSION);
 
-    Controller::instance();
+    //auto consoleLogger = ConsoleLogger();
 
     auto* mainWindow = new MainWindow();
     mainWindow->show();

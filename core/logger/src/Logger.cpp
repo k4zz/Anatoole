@@ -10,7 +10,6 @@ Logger& Logger::instance()
 
 void Logger::log(const std::string& _msg, LogLevel _level, const std::string& _fileName, int _line)
 {
-    std::cout << _fileName << ":" << _line << "\t" << toString(_level) << "\t" << _msg << "\n";
     notifySubscribers(_msg, _level, _fileName, _line);
 }
 

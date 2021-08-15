@@ -37,9 +37,13 @@ void Controller::setParsingType()
     mCollationParser = std::make_unique<CollationParser>();
 }
 
-void Controller::setSettings()
+void Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn, int _collationValueColumn)
 {
+    if(not isParsersCreated())
+        return;
 
+    mProtocolParser->setSettings(_protocolKeyColumn, _protocolValueColumn);
+    mCollationParser->setSettings(_collationKeyColumn, _collationValueColumn);
 }
 
 bool Controller::isParsersCreated()
