@@ -10,6 +10,14 @@
 
 void Controller::execute()
 {
+    resetComponents();
+
+    if(not validatePaths())
+        return;
+
+    //TODO: make it return bool
+    createParsers();
+
     if (not isParsersCreated())
     {
         LOG_ERROR("Cannot execute parsing; parsers not created");
@@ -22,8 +30,14 @@ void Controller::execute()
         return;
     }
 
-    Analyzer analyzer(mProtocolParser->getEntries(), mCollationParser->getEntries());
-    //TODO: call of analysis
+    mAnalyzer =  std::make_unique<Analyzer>(mProtocolParser->getEntries(), mCollationParser->getEntries());
+
+    handleProblems();
+
+    if (not mAnalyzer->problemCount())
+        LOG_INFO("Analysis done, no problems found");
+    else
+        LOG_WARNING("Analysis done, found " + std::to_string(mAnalyzer->problemCount()) + " problems. Check your files.");
 }
 
 void Controller::setPaths(std::string _protocolPath, std::string _collationPath)
@@ -31,33 +45,27 @@ void Controller::setPaths(std::string _protocolPath, std::string _collationPath)
     mProtocolPath = std::move(_protocolPath);
     mCollationPath = std::move(_collationPath);
 
-    createParsers();
 }
 
 void Controller::createParsers()
 {
-    if(mProtocolPath.empty())
-    {
-        LOG_DEBUG("Cannot create protocol parser, path is empty");
-    }
-    else if (Utils::ends_with(mProtocolPath, ".csv"))
+
+    if (Utils::ends_with(mProtocolPath, ".csv"))
     {
         mProtocolParser = std::make_unique<ProtocolParser>();
     }
 
-    if(mCollationPath.empty())
-    {
-        LOG_DEBUG("Cannot create collation parser, path is empty");
-    }
-    else if (Utils::ends_with(mCollationPath, ".csv"))
+    if (Utils::ends_with(mCollationPath, ".csv"))
     {
         mCollationParser = std::make_unique<CollationParser>();
     }
 }
 
-bool Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn, int _collationValueColumn)
+//TODO: settings should be separate class
+bool Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn,
+                             int _collationValueColumn)
 {
-    if(not isParsersCreated())
+    if (not isParsersCreated())
     {
         LOG_ERROR("Cannot set settings; Parser/s not created");
         return false;
@@ -77,16 +85,65 @@ bool Controller::parseFiles()
 {
     //TODO: should be done parallel
     auto isProtocolParsed = mProtocolParser->parse(mProtocolPath);
-    if (not isProtocolParsed) {
+    if (not isProtocolParsed)
+    {
         LOG_ERROR("Problem with parsing protocol");
-    } else
-        LOG_INFO("Protocol parsed correctly");
+    }
+    else
+        LOG_DEBUG("Protocol parsed correctly");
 
     auto isCollationParsed = mCollationParser->parse(mCollationPath);
-    if (not isCollationParsed) {
+    if (not isCollationParsed)
+    {
         LOG_ERROR("Problem with parsing collation");
-    } else
-        LOG_INFO("Collation parsed correctly");
+    }
+    else
+        LOG_DEBUG("Collation parsed correctly");
 
     return isProtocolParsed && isCollationParsed;
+}
+
+void Controller::handleProblems()
+{
+    for(auto problem : mAnalyzer->getProblems())
+    {
+        switch (problem.type)
+        {
+            case ProblemType::MissingPosition:
+                LOG_WARNING("Missing position " + problem.protocolPosition + " from protocol for name " + problem.name + " in collation");
+                break;
+            case ProblemType::MissingName:
+                LOG_WARNING("Missing name " + problem.name + " in collation");
+                break;
+            case ProblemType::RedundantPosition:
+                LOG_WARNING("Non-existing position " + problem.protocolPosition + " of protocol in collation");
+                break;
+            case ProblemType::RedundantName:
+                LOG_WARNING("Name " + problem.name + " is not existing in protocol for position " + problem.protocolPosition + " in collation");
+                break;
+        }
+    }
+}
+
+void Controller::resetComponents()
+{
+    mProtocolParser.reset();
+    mCollationParser.reset();
+    mAnalyzer.reset();
+}
+
+bool Controller::validatePaths()
+{
+    auto allow = true;
+    if (mProtocolPath.empty())
+    {
+        LOG_ERROR("Cannot create protocol parser, path is empty");
+        allow = false;
+    }
+    if (mCollationPath.empty())
+    {
+        LOG_ERROR("Cannot create collation parser, path is empty");
+        allow = false;
+    }
+    return allow;
 }

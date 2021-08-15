@@ -27,12 +27,12 @@ MainWindow::MainWindow(std::shared_ptr<Controller> _controller, QWidget* _parent
     connect(btnAnalyze, &QPushButton::clicked, [=]() {
         auto paths = pathsWidget->getPath();
         mController->setPaths(paths.first, paths.second);
+//        mController->setPaths("F:/protocol.csv", "F:/collation.csv");
         auto settings = settingsWidget->getSettings();
-        if(not mController->setSettings(settings._protocolKeyColumn,
+        mController->setSettings(settings._protocolKeyColumn,
                                  settings._protocolValueColumn,
                                  settings._collationKeyColumn,
-                                 settings._collationValueColumn))
-            return;
+                                 settings._collationValueColumn);
         mController->execute();
     });
 

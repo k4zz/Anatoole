@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "ParserBase.h"
+#include "Analyzer.h"
 
 class Controller;
 class UIInterface
@@ -39,4 +40,11 @@ private:
     std::string mCollationPath;
     std::unique_ptr<ParserBase> mProtocolParser;
     std::unique_ptr<ParserBase> mCollationParser;
+    std::unique_ptr<Analyzer> mAnalyzer;
+
+    void handleProblems();
+
+    void resetComponents();
+
+    bool validatePaths();
 };

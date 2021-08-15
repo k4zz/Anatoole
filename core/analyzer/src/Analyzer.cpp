@@ -12,14 +12,14 @@ Analyzer::Analyzer(const Entries& _protocolEntries, const Entries& _collationEnt
             auto collationEntry = _collationEntries.find(name);
             if(collationEntry == _collationEntries.end())
             {
-                LOG_WARNING("Missing name " + name + " in collation");
+                problems.emplace_back(Problem{ProblemType::MissingName, num, name});
                 continue;
             }
 
             auto temp = std::find(collationEntry->second.begin(), collationEntry->second.end(), num);
             if(temp == collationEntry->second.end())
             {
-                LOG_WARNING("Missing position " + num + " from protocol for name " + name + " in collation");
+                problems.emplace_back(Problem{ProblemType::MissingPosition, num, name});
                 continue;
             }
         }
@@ -32,16 +32,26 @@ Analyzer::Analyzer(const Entries& _protocolEntries, const Entries& _collationEnt
             auto protocolEntry = _protocolEntries.find(num);
             if(protocolEntry == _protocolEntries.end())
             {
-                LOG_WARNING("Non-existing position " + num + " of protocol in collation");
+                problems.emplace_back(Problem{ProblemType::RedundantPosition, num, name});
                 continue;
             }
 
             auto temp = std::find(protocolEntry->second.begin(), protocolEntry->second.end(), name);
             if(temp == protocolEntry->second.end())
             {
-                LOG_WARNING("Name " + name + " is not existing in protocol for position " + num + " in collation");
+                problems.emplace_back(Problem{ProblemType::RedundantName, num, name});
+                continue;
             }
-
         }
     }
+}
+
+int Analyzer::problemCount() const
+{
+    return problems.size();
+}
+
+const std::vector<Problem>& Analyzer::getProblems() const
+{
+    return problems;
 }
