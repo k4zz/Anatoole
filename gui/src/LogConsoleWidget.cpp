@@ -20,6 +20,9 @@ LogConsoleWidget::LogConsoleWidget(QWidget* _parent)
 
 void LogConsoleWidget::log(const std::string& _msg, LogLevel _level, const std::string& _fileName, int _line)
 {
+    if(_level < LogLevel::INFO && !ui->cbDebugMode->checkState())
+        return;
+
     // LEVEL column
     ui->tbLogConsole->insertRow(ui->tbLogConsole->rowCount());
     auto item = new QTableWidgetItem(QString::fromStdString(toString(_level)));

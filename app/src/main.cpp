@@ -14,9 +14,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(PROJECT_VERSION);
 
     //auto consoleLogger = ConsoleLogger();
-
-    auto* mainWindow = new MainWindow();
+    auto controller = std::make_shared<Controller>();
+    auto mainWindow = new MainWindow(controller);
     mainWindow->show();
+
+    LOG_INFO(std::string(PROJECT_NAME) + " v" + std::string(PROJECT_VERSION) + " " +
+             getenv("USERNAME") + "@" + QSysInfo::machineHostName().toStdString() +
+             "(" + QSysInfo::prettyProductName().toStdString() + ")");
 
     QApplication::exec();
 

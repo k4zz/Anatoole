@@ -10,9 +10,10 @@
 
 #include <QPushButton>
 
-MainWindow::MainWindow(QWidget* _parent)
+MainWindow::MainWindow(std::shared_ptr<Controller> _controller, QWidget* _parent)
         : QMainWindow(_parent)
         , ui(new Ui::MainWindow)
+        , UIInterface(_controller)
 {
     ui->setupUi(this);
     auto windowTitle = QString(QCoreApplication::applicationName() + " v" + QCoreApplication::applicationVersion());
@@ -23,21 +24,17 @@ MainWindow::MainWindow(QWidget* _parent)
     auto btnAnalyze = new QPushButton("Analizuj", this);
     auto* logConsoleWidget = new LogConsoleWidget(this);
 
-    connect(btnAnalyze, &QPushButton::clicked, [pathsWidget, settingsWidget]() {
+    connect(btnAnalyze, &QPushButton::clicked, [=]() {
         auto paths = pathsWidget->getPath();
-        Controller::instance().setParsingType();
-        Controller::instance().setPaths(paths.first, paths.second);
+        mController->setPaths(paths.first, paths.second);
         auto settings = settingsWidget->getSettings();
-        Controller::instance().setSettings(settings._protocolKeyColumn,
-                                           settings._protocolValueColumn,
-                                           settings._collationKeyColumn,
-                                           settings._collationValueColumn);
-        Controller::instance().execute();
+        if(not mController->setSettings(settings._protocolKeyColumn,
+                                 settings._protocolValueColumn,
+                                 settings._collationKeyColumn,
+                                 settings._collationValueColumn))
+            return;
+        mController->execute();
     });
-
-    LOG_DEBUG(windowTitle.toStdString() + " " +
-              getenv("USERNAME") + "@" + QSysInfo::machineHostName().toStdString() +
-              "(" + QSysInfo::prettyProductName().toStdString() + ")");
 
     ui->leftPanel->addWidget(pathsWidget);
     ui->leftPanel->addWidget(btnAnalyze);

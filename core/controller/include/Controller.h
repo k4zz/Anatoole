@@ -3,24 +3,38 @@
 #include <memory>
 #include "ParserBase.h"
 
+class Controller;
+class UIInterface
+{
+public:
+    UIInterface() = default;
+    UIInterface(std::shared_ptr<Controller> _controller)
+        : mController(_controller)
+        {}
+
+protected:
+    std::shared_ptr<Controller> mController;
+};
+
 class Controller
 {
 public:
-    static Controller& instance();
+    Controller() = default;
     Controller(Controller&) = delete;
     Controller& operator=(const Controller&) = delete;
 
     void execute();
-    void setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn, int _collationValueColumn);
+    bool setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn, int _collationValueColumn);
     void setPaths(std::string _protocolPath, std::string _collationPath);
-    void setParsingType();
+
+private:
+    void createParsers();
 
 private:
     bool isParsersCreated();
     bool parseFiles();
 
 private:
-    Controller() = default;
     std::string mProtocolPath;
     std::string mCollationPath;
     std::unique_ptr<ParserBase> mProtocolParser;
