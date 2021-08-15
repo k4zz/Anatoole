@@ -23,11 +23,15 @@ MainWindow::MainWindow(QWidget* _parent)
     auto btnAnalyze = new QPushButton("Analizuj", this);
     auto* logConsoleWidget = new LogConsoleWidget(this);
 
-    connect(btnAnalyze, &QPushButton::clicked, [pathsWidget]()
-    {
+    connect(btnAnalyze, &QPushButton::clicked, [pathsWidget, settingsWidget]() {
         auto paths = pathsWidget->getPath();
         Controller::instance().setParsingType();
         Controller::instance().setPaths(paths.first, paths.second);
+        auto settings = settingsWidget->getSettings();
+        Controller::instance().setSettings(settings._protocolKeyColumn,
+                                           settings._protocolValueColumn,
+                                           settings._collationKeyColumn,
+                                           settings._collationValueColumn);
         Controller::instance().execute();
     });
 

@@ -6,6 +6,19 @@
 
 #include "Logger.h"
 
+namespace
+{
+    int convertStringToColumn(const std::string& _str)
+    {
+        int column = 0;
+        for(auto ch : _str)
+        {
+            column += ch - 'A';
+        }
+        return column;
+    }
+}
+
 class Validator
         : public QValidator
 {
@@ -37,4 +50,12 @@ SettingsWidget::SettingsWidget(QWidget* _parent)
     ui->leProtocolName->setValidator(new Validator());
     ui->leCollationNum->setValidator(new Validator());
     ui->leCollationName->setValidator(new Validator());
+}
+
+Settings SettingsWidget::getSettings() const
+{
+    return Settings{convertStringToColumn(ui->leProtocolNum->text().toStdString()),
+                    convertStringToColumn(ui->leProtocolName->text().toStdString()),
+                    convertStringToColumn(ui->leCollationName->text().toStdString()),
+                    convertStringToColumn(ui->leCollationNum->text().toStdString())};
 }
