@@ -4,19 +4,16 @@
 
 #include "Utils.h"
 
-bool CollationParser::parse(std::string _path)
+void CollationParser::parse(std::string _path)
 {
     clear();
-
-    LOG_DEBUG("Collation settings: " + std::to_string(mKeyColumn) + "  " + std::to_string(mValueColumn));
 
     // open csv
     rapidcsv::Document doc;
     try {
         doc.Load(_path, rapidcsv::LabelParams(-1, -1));
     } catch (const std::exception& e) {
-        LOG_ERROR("Problem with opening/reading collation file: " + _path);
-        return false;
+        throw std::runtime_error("Problem with opening/reading collation file: " + _path);
     }
 
     for (auto rowIdx = 0; rowIdx < doc.GetRowCount(); rowIdx++) {
@@ -29,8 +26,7 @@ bool CollationParser::parse(std::string _path)
             key= Utils::trim(row.at(mKeyColumn));
         } catch (const std::out_of_range& e)
         {
-            LOG_ERROR("Provided key column is greater than available columns");
-            return false;
+            throw std::runtime_error("Provided key column is greater than available columns");
         }
 
         /// STEP II - prepare values
@@ -38,10 +34,9 @@ bool CollationParser::parse(std::string _path)
         try
         {
             valuesStr = row.at(mValueColumn);
-        } catch (const std::exception& e)
+        } catch (const std::out_of_range& e)
         {
-            LOG_ERROR(e.what());
-            return false;
+            throw std::runtime_error("Provided value column is greater than available columns");
         }
         // remove whitespaces
         valuesStr.erase(std::remove_if(valuesStr.begin(),
@@ -61,6 +56,4 @@ bool CollationParser::parse(std::string _path)
             entries[key] = std::move(values);
         }
     }
-
-    return true;
 }

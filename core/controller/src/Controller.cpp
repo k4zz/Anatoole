@@ -5,24 +5,25 @@
 #include "ProtocolParser.h"
 #include "CollationParser.h"
 #include "Utils.h"
+#include "Logger.h"
 
 void Controller::execute()
 {
     resetComponents();
 
-    if(not validatePaths())
+    if (not validatePaths())
     {
         LOG_ERROR("File paths are invalid");
         return;
     }
 
-    if(not createParsers())
+    if (not createParsers())
     {
         LOG_ERROR("Not all parsers are created");
         return;
     }
 
-    if(not setSettings())
+    if (not setSettings())
     {
         return;
     }
@@ -32,14 +33,15 @@ void Controller::execute()
         return;
     }
 
-    mAnalyzer =  std::make_unique<Analyzer>(mProtocolParser->getEntries(), mCollationParser->getEntries());
+    mAnalyzer = std::make_unique<Analyzer>(mProtocolParser->getEntries(), mCollationParser->getEntries());
 
     handleProblems();
 
     if (not mAnalyzer->problemsCount())
         LOG_INFO("Analysis done, no problems found");
     else
-        LOG_WARNING("Analysis done, found " + std::to_string(mAnalyzer->problemsCount()) + " problems. Check your files.");
+        LOG_WARNING(
+                "Analysis done, found " + std::to_string(mAnalyzer->problemsCount()) + " problems. Check your files.");
 }
 
 void Controller::resetComponents()
@@ -78,13 +80,15 @@ bool Controller::createParsers()
     if (Utils::ends_with(mProtocolPath, ".csv"))
     {
         mProtocolParser = std::make_unique<ProtocolParser>();
-        LOG_DEBUG("CSVProtocolParser created");
+        if(mProtocolParser)
+            LOG_DEBUG("CSVProtocolParser created");
     }
 
     if (Utils::ends_with(mCollationPath, ".csv"))
     {
         mCollationParser = std::make_unique<CollationParser>();
-        LOG_DEBUG("CSVCollationParser created");
+        if(mCollationParser)
+            LOG_DEBUG("CSVCollationParser created");
     }
 
     return mProtocolParser && mCollationParser;
@@ -100,33 +104,41 @@ void Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, i
 bool Controller::parseFiles()
 {
     //TODO: should be done parallel
-    auto isProtocolParsed = mProtocolParser->parse(mProtocolPath);
-    if (not isProtocolParsed)
+    auto allow = true;
+    try
     {
-        LOG_ERROR("Problem with parsing protocol");
-    }
-    else
+        mProtocolParser->parse(mProtocolPath);
         LOG_DEBUG("Protocol parsed correctly");
-
-    auto isCollationParsed = mCollationParser->parse(mCollationPath);
-    if (not isCollationParsed)
+    } catch (const std::exception& e)
     {
-        LOG_ERROR("Problem with parsing collation");
+        LOG_ERROR(e.what());
+        LOG_ERROR("Not able to parse protocol file");
+        allow = false;
     }
-    else
-        LOG_DEBUG("Collation parsed correctly");
 
-    return isProtocolParsed && isCollationParsed;
+    try
+    {
+        mCollationParser->parse(mCollationPath);
+        LOG_DEBUG("Collation parsed correctly");
+    } catch (const std::exception& e)
+    {
+        LOG_ERROR(e.what());
+        LOG_ERROR("Not able to parse collation file");
+        allow = false;
+    }
+
+    return allow;
 }
 
 void Controller::handleProblems()
 {
-    for(const auto& problem : mAnalyzer->getProblems())
+    for (const auto& problem : mAnalyzer->getProblems())
     {
         switch (problem.type)
         {
             case ProblemType::MissingPosition:
-                LOG_WARNING("Missing position " + problem.protocolPosition + " from protocol for name " + problem.name + " in collation");
+                LOG_WARNING("Missing position " + problem.protocolPosition + " from protocol for name " + problem.name +
+                            " in collation");
                 break;
             case ProblemType::MissingName:
                 LOG_WARNING("Missing name " + problem.name + " in collation");
@@ -135,7 +147,8 @@ void Controller::handleProblems()
                 LOG_WARNING("Non-existing position " + problem.protocolPosition + " of protocol in collation");
                 break;
             case ProblemType::RedundantName:
-                LOG_WARNING("Name " + problem.name + " is not existing in protocol for position " + problem.protocolPosition + " in collation");
+                LOG_WARNING("Name " + problem.name + " is not existing in protocol for position " +
+                            problem.protocolPosition + " in collation");
                 break;
         }
     }
@@ -143,9 +156,9 @@ void Controller::handleProblems()
 
 bool Controller::setSettings()
 {
-    if(not (mProtocolParser && mCollationParser))
+    if (not(mProtocolParser and mCollationParser))
     {
-        LOG_ERROR("Cannot set settings, parsers not created");
+        LOG_ERROR("Cannot set settings, not all parsers not created");
         return false;
     }
 

@@ -4,11 +4,9 @@
 
 #include "Utils.h"
 
-bool ProtocolParser::parse(std::string _path)
+void ProtocolParser::parse(std::string _path)
 {
     clear();
-
-    LOG_DEBUG("Protocol settings: " + std::to_string(mKeyColumn) + "  " + std::to_string(mValueColumn));
 
     // open csv
     rapidcsv::Document doc;
@@ -23,8 +21,7 @@ bool ProtocolParser::parse(std::string _path)
                          true
                  ));
     } catch (const std::exception& e) {
-        LOG_ERROR("Problem with opening/reading protocol file: " + _path);
-        return false;
+        throw std::runtime_error("Problem with opening/reading protocol file: " + _path);
     }
 
     for (auto rowIdx = 0; rowIdx < doc.GetRowCount(); rowIdx++) {
@@ -37,8 +34,7 @@ bool ProtocolParser::parse(std::string _path)
             key= Utils::trim(row.at(mKeyColumn));
         } catch (const std::exception& e)
         {
-            LOG_ERROR(e.what());
-            return false;
+            throw std::runtime_error("Provided key column is greater than available columns");
         }
 
         /// STEP II - prepare values
@@ -48,8 +44,7 @@ bool ProtocolParser::parse(std::string _path)
             valuesStr = row.at(mValueColumn);
         } catch (const std::out_of_range& e)
         {
-            LOG_ERROR("Provided key column is greater than available columns");
-            return false;
+            throw std::runtime_error("Provided value column is greater than available columns");
         }
         // split string
         auto values = Utils::split(valuesStr, "\n");
@@ -64,6 +59,4 @@ bool ProtocolParser::parse(std::string _path)
             entries[key] = std::move(values);
         }
     }
-
-    return true;
 }
