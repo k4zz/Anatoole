@@ -8,6 +8,8 @@ bool CollationParser::parse(std::string _path)
 {
     clear();
 
+    LOG_DEBUG("Collation settings: " + std::to_string(mKeyColumn) + "  " + std::to_string(mValueColumn));
+
     // open csv
     rapidcsv::Document doc;
     try {
@@ -21,10 +23,26 @@ bool CollationParser::parse(std::string _path)
         std::vector<std::string> row = doc.GetRow<std::string>(rowIdx);
 
         /// STEP I - prepare key
-        auto key = Utils::trim(row[mKeyColumn]);
+        std::string key;
+        try
+        {
+            key= Utils::trim(row.at(mKeyColumn));
+        } catch (const std::out_of_range& e)
+        {
+            LOG_ERROR("Provided key column is greater than available columns");
+            return false;
+        }
 
         /// STEP II - prepare values
-        auto valuesStr = row[mValueColumn];
+        std::string valuesStr;
+        try
+        {
+            valuesStr = row.at(mValueColumn);
+        } catch (const std::exception& e)
+        {
+            LOG_ERROR(e.what());
+            return false;
+        }
         // remove whitespaces
         valuesStr.erase(std::remove_if(valuesStr.begin(),
                                        valuesStr.end(),

@@ -9,10 +9,10 @@ namespace Ui
 
 struct Settings
 {
-    int _protocolKeyColumn;
-    int _protocolValueColumn;
-    int _collationKeyColumn;
-    int _collationValueColumn;
+    int protocolKeyColumn;
+    int protocolValueColumn;
+    int collationKeyColumn;
+    int collationValueColumn;
 };
 
 class SettingsWidget : public QWidget

@@ -8,6 +8,8 @@ bool ProtocolParser::parse(std::string _path)
 {
     clear();
 
+    LOG_DEBUG("Protocol settings: " + std::to_string(mKeyColumn) + "  " + std::to_string(mValueColumn));
+
     // open csv
     rapidcsv::Document doc;
     try {
@@ -29,10 +31,26 @@ bool ProtocolParser::parse(std::string _path)
         std::vector<std::string> row = doc.GetRow<std::string>(rowIdx);
 
         /// STEP I - prepare key
-        auto key = Utils::trim(row[mKeyColumn]);
+        std::string key;
+        try
+        {
+            key= Utils::trim(row.at(mKeyColumn));
+        } catch (const std::exception& e)
+        {
+            LOG_ERROR(e.what());
+            return false;
+        }
 
         /// STEP II - prepare values
-        auto valuesStr = row[mValueColumn];
+        std::string valuesStr;
+        try
+        {
+            valuesStr = row.at(mValueColumn);
+        } catch (const std::out_of_range& e)
+        {
+            LOG_ERROR("Provided key column is greater than available columns");
+            return false;
+        }
         // split string
         auto values = Utils::split(valuesStr, "\n");
         // remove empty strings

@@ -8,14 +8,13 @@
 
 namespace
 {
-    int convertStringToColumn(const std::string& _str)
+    int convertStringToColumnIterator(const std::string& _str)
     {
         int column = 0;
-        for(auto ch : _str)
-        {
-            column += ch - 'A';
+        for (char i : _str) {
+            column = column * 26 + i - 64;
         }
-        return column;
+        return column - 1;
     }
 }
 
@@ -58,8 +57,8 @@ SettingsWidget::SettingsWidget(QWidget* _parent)
 
 Settings SettingsWidget::getSettings() const
 {
-    return Settings{convertStringToColumn(ui->leProtocolNum->text().toStdString()),
-                    convertStringToColumn(ui->leProtocolName->text().toStdString()),
-                    convertStringToColumn(ui->leCollationName->text().toStdString()),
-                    convertStringToColumn(ui->leCollationNum->text().toStdString())};
+    return Settings{convertStringToColumnIterator(ui->leProtocolNum->text().toStdString()),
+                    convertStringToColumnIterator(ui->leProtocolName->text().toStdString()),
+                    convertStringToColumnIterator(ui->leCollationName->text().toStdString()),
+                    convertStringToColumnIterator(ui->leCollationNum->text().toStdString())};
 }

@@ -25,6 +25,9 @@ PathsWidget::PathsWidget(QWidget* _parent)
     connect(ui->btnCollation, &QPushButton::clicked, this, &PathsWidget::onCollationButtonClicked);
     connect(ui->leProtocol, &QLineEdit::textChanged, this, &PathsWidget::onLineEditChanged);
     connect(ui->leCollation, &QLineEdit::textChanged, this, &PathsWidget::onLineEditChanged);
+
+    ui->leProtocol->insert("F:/protocol.csv");
+    ui->leCollation->insert("F:/collation.csv");
 }
 
 void PathsWidget::onProtocolButtonClicked()

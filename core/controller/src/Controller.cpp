@@ -18,13 +18,17 @@ void Controller::execute()
 
     if(not createParsers())
     {
-        LOG_ERROR("Parsers were not created");
+        LOG_ERROR("Not all parsers are created");
+        return;
+    }
+
+    if(not setSettings())
+    {
         return;
     }
 
     if (not parseFiles())
     {
-        LOG_ERROR("Failed to parse one of the files");
         return;
     }
 
@@ -50,7 +54,6 @@ void Controller::setPaths(std::string _protocolPath, std::string _collationPath)
 {
     mProtocolPath = std::move(_protocolPath);
     mCollationPath = std::move(_collationPath);
-
 }
 
 bool Controller::validatePaths()
@@ -88,15 +91,10 @@ bool Controller::createParsers()
 }
 
 //TODO: settings should be separate class
-bool Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn,
+void Controller::setSettings(int _protocolKeyColumn, int _protocolValueColumn, int _collationKeyColumn,
                              int _collationValueColumn)
 {
-    if(not (mProtocolParser && mCollationParser))
-        return false;
-
-    mProtocolParser->setSettings(_protocolKeyColumn, _protocolValueColumn);
-    mCollationParser->setSettings(_collationKeyColumn, _collationValueColumn);
-    return true;
+    mSettings = {_protocolKeyColumn, _protocolValueColumn, _collationKeyColumn, _collationValueColumn};
 }
 
 bool Controller::parseFiles()
@@ -141,4 +139,17 @@ void Controller::handleProblems()
                 break;
         }
     }
+}
+
+bool Controller::setSettings()
+{
+    if(not (mProtocolParser && mCollationParser))
+    {
+        LOG_ERROR("Cannot set settings, parsers not created");
+        return false;
+    }
+
+    mProtocolParser->setSettings(mSettings.protocolKeyColumn, mSettings.protocolValueColumn);
+    mCollationParser->setSettings(mSettings.collationKeyColumn, mSettings.collationValueColumn);
+    return true;
 }
