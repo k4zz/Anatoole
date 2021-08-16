@@ -3,6 +3,7 @@ project(controller)
 add_library(${PROJECT_NAME} STATIC
         include/Controller.h
         src/Controller.cpp
+        include/ColumnsSettings.h
         )
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)

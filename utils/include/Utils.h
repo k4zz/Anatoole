@@ -22,7 +22,7 @@ namespace Utils
     inline std::vector <std::string> split(std::string _str, const std::string& _deli)
     {
         std::vector <std::string> words;
-        size_t pos = 0;
+        size_t pos;
         std::string word;
         while ((pos = _str.find(_deli)) != std::string::npos) {
             std::string token = _str.substr(0, pos);

@@ -6,8 +6,6 @@
 #include "LogConsoleWidget.h"
 #include "SettingsWidget.h"
 
-#include "Controller.h"
-
 #include <QPushButton>
 
 MainWindow::MainWindow(std::shared_ptr<Controller> _controller, QWidget* _parent)
@@ -28,11 +26,10 @@ MainWindow::MainWindow(std::shared_ptr<Controller> _controller, QWidget* _parent
         auto paths = pathsWidget->getPath();
         mController->setPaths(paths.first, paths.second);
         auto settings = settingsWidget->getSettings();
-        if(not mController->setSettings(settings._protocolKeyColumn,
-                                 settings._protocolValueColumn,
-                                 settings._collationKeyColumn,
-                                 settings._collationValueColumn))
-            return;
+        mController->setSettings(settings.protocolKeyColumn,
+                                 settings.protocolValueColumn,
+                                 settings.collationKeyColumn,
+                                 settings.collationValueColumn);
         mController->execute();
     });
 
