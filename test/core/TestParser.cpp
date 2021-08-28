@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
 #include "CollationParser.h"
+#include "TestFilePaths.h"
 
 TEST(CollationParser, Parser_ValidFile_ReadsSeverEntries)
 {
-    auto path = "D:/_CODE/Anatoole/test/test_files/fully_correct_collation.csv";
+    auto path = FULLY_CORRECT_COLLATION;
 
     auto collationParser = CollationParser();
     collationParser.parse(path);
