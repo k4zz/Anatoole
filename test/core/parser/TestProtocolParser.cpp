@@ -28,5 +28,3 @@ TEST(ProtocolParser, Parser_MissingLine_ThrowsException)
     auto protocolParser = ProtocolParser();
     EXPECT_THROW(protocolParser.parse(path), std::runtime_error);
 }
-
-//TEST(ProtocolParser, Parser_)

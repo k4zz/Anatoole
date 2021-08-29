@@ -28,5 +28,3 @@ TEST(CollationParser, Parser_MissingLine_ThrowsException)
     auto collationParser = CollationParser();
     EXPECT_THROW(collationParser.parse(path), std::runtime_error);
 }
-
-//TEST(CollationParser, Parser_)

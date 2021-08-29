@@ -4,6 +4,8 @@ project(Anatoole
         VERSION 0.1
         LANGUAGES CXX)
 
+option(TEST_ENABLE "" ON)
+
 configure_file(
         ${PROJECT_SOURCE_DIR}/cmake/version.h.in
         ${PROJECT_SOURCE_DIR}/app/include/version.h)
@@ -15,6 +17,8 @@ add_subdirectory(core)
 add_subdirectory(app)
 add_subdirectory(gui)
 
-enable_testing()
-include(GoogleTest)
-add_subdirectory(test)
+if(${TEST_ENABLE})
+    enable_testing()
+    include(GoogleTest)
+    add_subdirectory(test)
+endif()

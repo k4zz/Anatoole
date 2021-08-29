@@ -14,6 +14,7 @@ public:
 
     int problemsCount() const;
     const std::vector<Problem>& getProblems() const;
+
 private:
     std::vector<Problem> problems;
 };
