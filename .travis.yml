@@ -1,0 +1,19 @@
+language: shell
+os: windows
+
+matrix:
+  include:
+
+    - stage: build
+      install:
+        - choco install cmake
+        - choco install ninja
+        - choco install qt5-default
+      env: PATH=/c/Qt/5.15.2/mingw81_64/bin:$PATH
+      before_script:
+        - mkdir build
+        - cmake -G Ninja -B build -D CMAKE_BUILD_TYPE=Release
+      script:
+        - cmake --build build
+    - stage: tests
+    - stage: deploy
