@@ -23,7 +23,7 @@ void CollationParser::parse(std::string _path)
         std::string key;
         try
         {
-            key= Utils::trim(row.at(mKeyColumn));
+            key = Utils::trim(row.at(mKeyColumn));
         } catch (const std::out_of_range& e)
         {
             throw std::runtime_error("Provided key column is greater than available columns");
