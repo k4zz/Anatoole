@@ -5,7 +5,8 @@ enum class ProblemType
     MissingPosition = 0,
     MissingName,
     RedundantPosition,
-    RedundantName
+    RedundantName,
+    NonExistingPosition,
 };
 
 struct Problem

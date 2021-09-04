@@ -137,18 +137,17 @@ void Controller::handleProblems()
         switch (problem.type)
         {
             case ProblemType::MissingPosition:
-                LOG_WARNING("Missing position " + problem.protocolPosition + " from protocol for name " + problem.name +
+                LOG_WARNING("Position " + problem.protocolPosition + " from protocol is not included for name " + problem.name +
                             " in collation");
                 break;
             case ProblemType::MissingName:
-                LOG_WARNING("Missing name " + problem.name + " in collation");
+                LOG_WARNING("Missing name " + problem.name + " in collation with position " + problem.protocolPosition);
                 break;
             case ProblemType::RedundantPosition:
-                LOG_WARNING("Non-existing position " + problem.protocolPosition + " of protocol in collation");
+                LOG_WARNING("Name " + problem.name + " from collation is not part of protocol position " + problem.protocolPosition);
                 break;
-            case ProblemType::RedundantName:
-                LOG_WARNING("Name " + problem.name + " is not existing in protocol for position " +
-                            problem.protocolPosition + " in collation");
+            case ProblemType::NonExistingPosition:
+                LOG_WARNING("Position " + problem.protocolPosition + " from collation is not existing in protocol");
                 break;
         }
     }

@@ -33,14 +33,14 @@ Analyzer::Analyzer(const Entries& _protocolEntries, const Entries& _collationEnt
             auto protocolEntry = _protocolEntries.find(num);
             if(protocolEntry == _protocolEntries.end())
             {
-                problems.emplace_back(Problem{ProblemType::RedundantPosition, num, name});
+                problems.emplace_back(Problem{ProblemType::NonExistingPosition, num, name});
                 continue;
             }
 
             auto temp = std::find(protocolEntry->second.begin(), protocolEntry->second.end(), name);
             if(temp == protocolEntry->second.end())
             {
-                problems.emplace_back(Problem{ProblemType::RedundantName, num, name});
+                problems.emplace_back(Problem{ProblemType::RedundantPosition, num, name});
                 continue;
             }
         }

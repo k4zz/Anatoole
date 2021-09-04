@@ -11,6 +11,7 @@ public:
     virtual void parse(std::string _path) = 0;
     virtual void setSettings(int _keyColumn, int _valueColumn) = 0;
     virtual const Entries& getEntries() { return entries; }
+    void clear() { entries.clear(); }
 
 protected:
     Entries entries{};
