@@ -4,3 +4,10 @@
 [submodule "3rdparty/googletest"]
 	path = 3rdparty/googletest
 	url = https://github.com/google/googletest
+[submodule "3rdparty\\SDL"]
+	path = 3rdparty\\SDL
+	url = https://github.com/libsdl-org/SDL.git
+[submodule "3rdparty\\imgui"]
+	path = 3rdparty\\imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking

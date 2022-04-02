@@ -10,7 +10,7 @@ enum class LogLevel
     DEBUG,
     INFO,
     WARNING,
-    ERROR
+    ERRORS
 };
 
 inline std::string toString(LogLevel _level)
@@ -21,7 +21,7 @@ inline std::string toString(LogLevel _level)
         case LogLevel::DEBUG:       return "DEBUG";
         case LogLevel::INFO:        return "INFO";
         case LogLevel::WARNING:     return "WARNING";
-        case LogLevel::ERROR:       return "ERROR";
+        case LogLevel::ERRORS:       return "ERROR";
     }
     return "INVALID";
 }
@@ -55,4 +55,4 @@ private:
 #define LOG_DEBUG(_msg) LOG(LogLevel::DEBUG, _msg)
 #define LOG_INFO(_msg) LOG(LogLevel::INFO, _msg)
 #define LOG_WARNING(_msg) LOG(LogLevel::WARNING, _msg)
-#define LOG_ERROR(_msg) LOG(LogLevel::ERROR, _msg)
+#define LOG_ERROR(_msg) LOG(LogLevel::ERRORS, _msg)

@@ -1,6 +1,6 @@
 project(tests)
 
-message("Test added")
+message(STATUS "Test added")
 
 add_subdirectory(test_files)
 

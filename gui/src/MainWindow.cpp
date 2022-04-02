@@ -39,3 +39,4 @@ MainWindow::MainWindow(std::shared_ptr<Controller> _controller, QWidget* _parent
     ui->leftPanel->addStretch();
     ui->rightPanel->addWidget(logConsoleWidget);
 }
+
